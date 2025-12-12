@@ -9,7 +9,7 @@ export function Header() {
   }
 
   return (
-    <header className="mx-auto flex flex-col items-center justify-center gap-4 p-8">
+    <header className="mx-auto flex flex-col items-center justify-center gap-4 px-8 py-4">
       <img src="/logo-pluga.svg" alt="logo da Pluga" />
 
       <h1 className="font-bold text-4xl text-muted-foreground">
