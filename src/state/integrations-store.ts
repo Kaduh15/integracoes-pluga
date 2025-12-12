@@ -34,6 +34,8 @@ export const useIntegrationsStore = create<IntegrationsStore>()(
       setSearch: (searchValue) => {
         set(({ state }) => {
           state.searchValue = searchValue
+
+          state.pagination.currentPage = 1
         })
       },
       nextPage: (lastPage) => {
