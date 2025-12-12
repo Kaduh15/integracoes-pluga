@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@radix-ui/react-slot':
+        specifier: ^1.2.4
+        version: 1.2.4(@types/react@19.2.7)(react@19.2.3)
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@7.2.7(@types/node@24.10.3)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -23,6 +26,9 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
+      immer:
+        specifier: ^11.0.1
+        version: 11.0.1
       lucide-react:
         specifier: ^0.561.0
         version: 0.561.0(react@19.2.3)
@@ -41,6 +47,9 @@ importers:
       zod:
         specifier: ^4.1.13
         version: 4.1.13
+      zustand:
+        specifier: ^5.0.9
+        version: 5.0.9(@types/react@19.2.7)(immer@11.0.1)(react@19.2.3)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.3.8
@@ -353,6 +362,24 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@radix-ui/react-compose-refs@1.1.2':
+    resolution: {integrity: sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  '@radix-ui/react-slot@1.2.4':
+    resolution: {integrity: sha512-Jl+bCv8HxKnlTLVrcDE8zTMJ09R9/ukw4qBs/oZClOfoQk/cOTbDn+NceXfV7j09YPVQUryJPHurafcSg6EVKA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@rolldown/pluginutils@1.0.0-beta.47':
     resolution: {integrity: sha512-8QagwMH3kNCuzD8EWL8R2YPW5e4OrHNSAHRFDdmFqEwEaD/KcNKjVoumo+gP2vW5eKB2UPbM6vTYiGZX0ixLnw==}
@@ -923,6 +950,9 @@ packages:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
 
+  immer@11.0.1:
+    resolution: {integrity: sha512-naDCyggtcBWANtIrjQEajhhBEuL9b0Zg4zmlWK2CzS6xCWSE39/vvf4LqnMjUAWHBhot4m9MHCM/Z+mfWhUkiA==}
+
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -1259,6 +1289,24 @@ packages:
   zod@4.1.13:
     resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
+  zustand@5.0.9:
+    resolution: {integrity: sha512-ALBtUj0AfjJt3uNRQoL1tL2tMvj6Gp/6e39dnfT6uzpelGru8v1tPOGBzayOWbPJvujM8JojDk3E1LxeFisBNg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
 snapshots:
 
   '@biomejs/biome@2.3.8':
@@ -1449,6 +1497,19 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@radix-ui/react-compose-refs@1.1.2(@types/react@19.2.7)(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+    optionalDependencies:
+      '@types/react': 19.2.7
+
+  '@radix-ui/react-slot@1.2.4(@types/react@19.2.7)(react@19.2.3)':
+    dependencies:
+      '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.2.7)(react@19.2.3)
+      react: 19.2.3
+    optionalDependencies:
+      '@types/react': 19.2.7
 
   '@rolldown/pluginutils@1.0.0-beta.47': {}
 
@@ -1978,6 +2039,8 @@ snapshots:
 
   ignore@7.0.5: {}
 
+  immer@11.0.1: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -2248,3 +2311,9 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@4.1.13: {}
+
+  zustand@5.0.9(@types/react@19.2.7)(immer@11.0.1)(react@19.2.3):
+    optionalDependencies:
+      '@types/react': 19.2.7
+      immer: 11.0.1
+      react: 19.2.3
