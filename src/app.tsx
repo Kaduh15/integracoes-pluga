@@ -4,7 +4,7 @@ import { IntegrationList } from './components/integrations-grid'
 
 function App() {
   return (
-    <main className="">
+    <main className="mx-auto min-h-screen max-w-5xl bg-white dark:bg-black">
       <Header />
 
       <IntegrationList />
