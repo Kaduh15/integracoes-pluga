@@ -1,6 +1,7 @@
 import { useIntegrations } from '@/hooks/useIntegrations'
 import { useIntegrationsStore } from '@/state/integrations-store'
 import { IntegrationCard } from './integration-card'
+import { PaginationItems } from './pagination-items'
 
 export function IntegrationList() {
   const { integrations } = useIntegrations()
@@ -11,36 +12,42 @@ export function IntegrationList() {
 
   const totalIntegrations = integrations.length
 
-  const filteredIntegrations = integrations
-    .filter((integration) =>
-      integration.name.toLowerCase().includes(searchValue.toLowerCase()),
-    )
-    .slice(
-      (pagination.currentPage - 1) * pagination.itemsPerPage,
-      pagination.currentPage * pagination.itemsPerPage,
-    )
+  const filteredIntegrations = integrations.filter((integration) =>
+    integration.name.toLowerCase().includes(searchValue.toLowerCase()),
+  )
 
-  const lastPage = Math.ceil(totalIntegrations / pagination.itemsPerPage)
+  const lastPage = Math.ceil(
+    filteredIntegrations.length / pagination.itemsPerPage,
+  )
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4 px-8">
+    <div className="mb-4 flex max-w-7xl flex-col space-y-4 px-8">
       <span className="block text-accent-foreground/50 text-sm">
-        {totalIntegrations || integrations.length} integrações encontradas total
-        page: {Math.ceil(totalIntegrations / pagination.itemsPerPage)} - current
-        page: {pagination.currentPage}
+        {totalIntegrations || integrations.length} integrações encontradas
       </span>
-      <ul className="grid grid-cols-4 grid-rows-3">
-        {filteredIntegrations.map((integration) => (
-          <IntegrationCard key={integration.app_id} {...integration} />
-        ))}
+      <ul className="mx-auto grid grid-cols-2 grid-rows-6 gap-4 md:grid-cols-3 md:grid-rows-4 lg:grid-cols-4 lg:grid-rows-3">
+        {filteredIntegrations
+          .slice(
+            (pagination.currentPage - 1) * pagination.itemsPerPage,
+            pagination.currentPage * pagination.itemsPerPage,
+          )
+          .map((integration) => (
+            <IntegrationCard key={integration.app_id} {...integration} />
+          ))}
       </ul>
 
-      <button onClick={() => nextPage(lastPage)} type="button">
-        next
-      </button>
-      <button onClick={previousPage} type="button">
-        previous
-      </button>
+      <PaginationItems
+        totalItems={filteredIntegrations.length}
+        itemsPerPage={pagination.itemsPerPage}
+        currentPage={pagination.currentPage}
+        onPageChange={(page) => {
+          if (page > pagination.currentPage) {
+            nextPage(lastPage)
+          } else {
+            previousPage()
+          }
+        }}
+      />
     </div>
   )
 }
