@@ -13,6 +13,7 @@ type Actions = {
   setSearch: (searchValue: string) => void
   nextPage: (lastPage?: number) => void
   previousPage: () => void
+  onPageChange: (page: number) => void
 }
 
 type IntegrationsStore = {
@@ -53,6 +54,11 @@ export const useIntegrationsStore = create<IntegrationsStore>()(
           if (state.pagination.currentPage < 1) {
             state.pagination.currentPage = 1
           }
+        })
+      },
+      onPageChange: (page) => {
+        set(({ state }) => {
+          state.pagination.currentPage = page
         })
       },
     },
