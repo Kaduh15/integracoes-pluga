@@ -25,7 +25,7 @@ export function IntegrationCard({
       type="button"
       popoverTargetAction="toggle"
       popoverTarget={`modal`}
-      className="flex aspect-square w-30 flex-col items-center justify-center rounded-lg border p-4"
+      className="flex aspect-square w-30 flex-col items-center justify-center rounded-lg border p-4 transition hover:scale-[1.03] hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary active:scale-95"
       {...props}
     >
       <img
