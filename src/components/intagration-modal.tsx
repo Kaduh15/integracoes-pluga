@@ -1,18 +1,11 @@
 import type { ComponentProps } from 'react'
-import { useHistoryViewerStore } from '@/state/history-viwer-store'
+import { useHistoryStore } from '@/state/history-viwer-store'
 import { useModalStore } from '@/state/modal-store'
 
-type IntegrationModalProps = {
-  name: string
-  icon: string
-} & ComponentProps<'div'>
+type IntegrationModalProps = ComponentProps<'div'>
 
-export function IntegrationModal({
-  name,
-  icon,
-  ...props
-}: IntegrationModalProps) {
-  const { historyViewer } = useHistoryViewerStore(({ state }) => state)
+export function IntegrationModal({ ...props }: IntegrationModalProps) {
+  const { history } = useHistoryStore(({ state }) => state)
   const { data: modalData } = useModalStore(({ state }) => state)
 
   return (
@@ -25,32 +18,35 @@ export function IntegrationModal({
       <div>
         <img
           className="aspect-square min-w-10"
-          src={modalData?.icon ?? icon}
-          alt={`${modalData?.name ?? name} icon`}
+          src={modalData?.icon}
+          alt={`${modalData?.name} icon`}
         />
 
-        <span className="mt-2 font-medium text-xl">
-          {modalData?.name ?? name}
-        </span>
+        <span className="mt-2 font-medium text-xl">{modalData?.name}</span>
       </div>
 
       <div>
-        <h2 className="mt-4 mb-2 font-semibold text-lg">Histórico de Acessos</h2>
+        <h2 className="mt-4 mb-2 font-semibold text-lg">
+          Histórico de Acessos
+        </h2>
         <ul className="max-h-48 space-y-2 overflow-y-auto">
-          {historyViewer.length === 0 && (
+          {history.length === 0 && (
             <li className="text-accent-foreground/50">Nenhum acesso ainda.</li>
           )}
 
-          {historyViewer.map((historyItem) => (
-            <li key={historyItem.name} className="flex items-center gap-2">
-              <img
-                className="aspect-square w-6"
-                src={historyItem.icon}
-                alt={`${historyItem.name} icon`}
-              />
-              <span className="font-medium">{historyItem.name}</span>
-            </li>
-          ))}
+          {history
+            .slice(0, 3)
+            .map((historyItem) => (
+              <li key={historyItem.name} className="flex items-center gap-2">
+                <img
+                  className="aspect-square w-6"
+                  src={historyItem.icon}
+                  alt={`${historyItem.name} icon`}
+                />
+                <span className="font-medium">{historyItem.name}</span>
+              </li>
+            ))
+            .reverse()}
         </ul>
       </div>
     </div>

@@ -9,7 +9,7 @@ function App() {
 
       <IntegrationList />
 
-      <IntegrationModal name="teste" icon="" />
+      <IntegrationModal />
     </main>
   )
 }

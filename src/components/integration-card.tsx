@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import type { Integration } from '@/schemas/integration'
-import { useHistoryViewerStore } from '@/state/history-viwer-store'
+import { useHistoryStore } from '@/state/history-viwer-store'
 import { useModalStore } from '@/state/modal-store'
 
 type IntegrationCardProps = {} & Integration & ComponentProps<'button'>
@@ -10,10 +10,8 @@ export function IntegrationCard({
   icon,
   ...props
 }: IntegrationCardProps) {
-  const { addHistory } = useHistoryViewerStore(({ actions }) => actions)
+  const { addHistory } = useHistoryStore(({ actions }) => actions)
   const { addData } = useModalStore(({ actions }) => actions)
-
-
 
   return (
     <button
