@@ -6,8 +6,8 @@ import { PaginationItems } from './pagination-items'
 export function IntegrationList() {
   const { integrations } = useIntegrations()
   const { searchValue, pagination } = useIntegrationsStore(({ state }) => state)
-  const { nextPage, previousPage } = useIntegrationsStore(
-    ({ actions }) => actions,
+  const { nextPage, previousPage, onPageChange } = useIntegrationsStore(
+    ({ actions }) => (actions),
   )
 
   const totalIntegrations = integrations.length
@@ -40,12 +40,14 @@ export function IntegrationList() {
         totalItems={filteredIntegrations.length}
         itemsPerPage={pagination.itemsPerPage}
         currentPage={pagination.currentPage}
+        nextPage={() => {
+          nextPage(lastPage)
+        }}
+        previousPage={() => {
+          previousPage()
+        }}
         onPageChange={(page) => {
-          if (page > pagination.currentPage) {
-            nextPage(lastPage)
-          } else {
-            previousPage()
-          }
+          onPageChange(page)
         }}
       />
     </div>
