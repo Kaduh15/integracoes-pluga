@@ -13,7 +13,7 @@ export function Header() {
       <img
         src="/logo-pluga.svg"
         alt="logo da Pluga"
-        className="aspect-auto w-40 sm:w-48 md:w-60"
+        className="aspect-auto w-40 sm:w-48 md:w-60 lg:w-45"
       />
 
       <h1 className="font-bold text-2xl text-muted-foreground">
