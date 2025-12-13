@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 type State = {
-  historyViewer: {
+  history: {
     name: string
     icon: string
   }[]
@@ -10,35 +10,36 @@ type State = {
 
 type Actions = {
   addHistory: ({ name, icon }: { name: string; icon: string }) => void
-  getHistory: () => {
-    name: string
-    icon: string
-  }[]
 }
 
-type HistoryViewerStore = {
+type HistoryStore = {
   actions: Actions
   state: State
 }
 
-export const useHistoryViewerStore = create<HistoryViewerStore>()(
-  immer((set, get) => ({
+export const useHistoryStore = create<HistoryStore>()(
+  immer((set) => ({
     state: {
-      historyViewer: [],
+      history: [],
     },
 
     actions: {
       addHistory: ({ name, icon }: { name: string; icon: string }) => {
         set(({ state }) => {
-          state.historyViewer.push({ name, icon })
+          const indexIntegration = state.history.findIndex(
+            (item) => item.name === name && item.icon === icon,
+          )
 
-          state.historyViewer = state.historyViewer.slice(-3).reverse()
+          if (indexIntegration !== -1) {
+            state.history.splice(indexIntegration, 1)
+          }
+
+          state.history.push({ name, icon })
+
+          if (state.history.length > 3) {
+            state.history.shift()
+          }
         })
-      },
-      getHistory: () => {
-        const history = get().state.historyViewer || [];
-
-        return history
       },
     },
   })),
