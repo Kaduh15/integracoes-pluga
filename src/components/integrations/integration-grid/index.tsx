@@ -17,11 +17,11 @@ export function IntegrationGrid() {
       <span className="block text-accent-foreground/50 text-sm">
         {totalIntegrations || integrations.length} integrações encontradas
       </span>
-      <ul className="mx-auto grid grid-cols-2 xs:grid-cols-3 grid-rows-6 xs:grid-rows-4 gap-4 sm:grid-cols-4 sm:grid-rows-3">
+      <section className="mx-auto grid grid-cols-2 xs:grid-cols-3 grid-rows-6 xs:grid-rows-4 gap-4 sm:grid-cols-4 sm:grid-rows-3">
         {paginatedIntegrations.map((integration) => (
           <IntegrationCard key={integration.app_id} integration={integration} />
         ))}
-      </ul>
+      </section>
 
       <PaginationItems
         totalItems={filteredIntegrations.length}
