@@ -2,6 +2,12 @@
 
 Aplicação React para visualização e gerenciamento de integrações.
 
+## 🌐 Aplicação em Produção
+
+Aplicação disponível em: [https://pluga.lebdev.me/](https://pluga.lebdev.me/)
+
+A aplicação está rodando em um servidor VPS próprio, utilizando Docker para containerização e Nginx para servir os arquivos estáticos.
+
 ## 🚀 Como Rodar o Projeto
 
 ### Pré-requisitos
