@@ -1,73 +1,248 @@
-# React + TypeScript + Vite
+# Integrações Pluga
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação React para visualização e gerenciamento de integrações.
 
-Currently, two official plugins are available:
+## 🚀 Como Rodar o Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Pré-requisitos
 
-## React Compiler
+- Node.js 22+
+- pnpm 10+
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Instalação
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Variáveis de Ambiente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Crie um arquivo `.env` na raiz:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=https://api.exemplo.com
 ```
+
+### Desenvolvimento
+
+```bash
+pnpm dev
+```
+
+### Build
+
+```bash
+pnpm build
+```
+
+### Testes
+
+```bash
+pnpm test
+```
+
+### Docker
+
+#### Usando Docker Compose (Recomendado)
+
+```bash
+# Criar arquivo .env com as variáveis necessárias
+echo "VITE_API_URL=https://api.exemplo.com" > .env
+echo "PORT=3000" >> .env
+
+# Build e executar
+docker-compose up --build
+
+# Executar em background
+docker-compose up -d
+
+# Parar
+docker-compose down
+```
+
+#### Usando Docker diretamente
+
+```bash
+# Build passando variável de ambiente
+docker build --build-arg VITE_API_URL=https://api.exemplo.com -t integracoes-pluga .
+
+# Executar
+docker run -p 3000:80 integracoes-pluga
+```
+
+## 🏗️ Decisões Importantes da Arquitetura
+
+### Gerenciamento de Estado Híbrido
+
+- **TanStack Query**: Para dados assíncronos da API (cache, sincronização)
+- **Zustand com Immer**: Para estado local da UI (filtros, paginação, seleções)
+
+Separação de responsabilidades: React Query gerencia estado assíncrono, Zustand gerencia estado síncrono da interface.
+
+### Validação com Zod
+
+Toda validação é feita através de schemas Zod:
+- Variáveis de ambiente validadas em runtime
+- Respostas da API validadas antes do uso
+- Tipos inferidos automaticamente do schema
+
+### Camada HTTP Abstrata
+
+Abstração da camada HTTP (`src/http/`) para facilitar testes e mudanças futuras (interceptors, retry logic).
+
+### Estrutura por Responsabilidade
+
+```
+src/
+├── components/  # Componentes React
+├── hooks/       # Custom hooks
+├── stores/      # Zustand stores
+├── http/        # Camada HTTP
+├── schemas/     # Schemas Zod
+└── providers/   # Context providers
+```
+
+### TypeScript Strict + Path Aliases
+
+Type-safety máximo com aliases `@/` para imports mais limpos.
+
+## 🗺️ Fluxo Principal da Aplicação
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     INICIALIZAÇÃO                                │
+│  main.tsx → Providers (QueryProvider) → App.tsx                 │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   CARREGAMENTO DE DADOS                         │
+│  IntegrationGrid → useIntegrationsGrid → useIntegrationsQuery   │
+│                              │                                   │
+│                              ▼                                   │
+│         React Query → getIntegrations() → httpGet()             │
+│                              │                                   │
+│                              ▼                                   │
+│         API: {VITE_API_URL}/ferramentas_search.json             │
+│                              │                                   │
+│                              ▼                                   │
+│         Validação Zod → integrationSchema.array()                │
+│                              │                                   │
+│                              ▼                                   │
+│         Cache React Query → integrations[]                       │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   EXIBIÇÃO NA GRID                              │
+│  IntegrationGrid usa:                                           │
+│    • integrations (de React Query)                              │
+│    • searchValue, pagination (de Zustand Store)                 │
+│                              │                                   │
+│                              ▼                                   │
+│  Filtragem: integrations.filter(name.includes(searchValue))     │
+│                              │                                   │
+│                              ▼                                   │
+│  Paginação: filteredIntegrations.slice(page * 12, (page+1)*12)  │
+│                              │                                   │
+│                              ▼                                   │
+│  Renderiza: paginatedIntegrations.map() → IntegrationCard       │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   INTERAÇÕES DO USUÁRIO                         │
+│                                                                  │
+│  ┌────────────────────────┐  ┌──────────────────────────────┐  │
+│  │   BUSCA (Header)       │  │  CLIQUE NO CARD              │  │
+│  │                        │  │                              │  │
+│  │  input onChange        │  │  IntegrationCard onClick     │  │
+│  │       │                │  │       │                      │  │
+│  │       ▼                │  │       ▼                      │  │
+│  │  setSearch(value)      │  │  select(integration)         │  │
+│  │       │                │  │       │                      │  │
+│  │       ▼                │  │       add(integration)       │  │
+│  │  Zustand Store         │  │       │                      │  │
+│  │  (searchValue)         │  │       ▼                      │  │
+│  │                        │  │  • SelectedIntegrationStore  │  │
+│  │  → Filtra grid         │  │  • HistoryStore (máx 3)      │  │
+│  │  → Reset página 1      │  │                              │  │
+│  └────────────────────────┘  │       ▼                      │  │
+│                              │  Modal abre automaticamente   │  │
+│                              └──────────────────────────────┘  │
+│                                                                  │
+│  ┌────────────────────────┐                                    │
+│  │   PAGINAÇÃO            │                                    │
+│  │                        │                                    │
+│  │  PaginationItems       │                                    │
+│  │  onPageChange(page)    │                                    │
+│  │       │                │                                    │
+│  │       ▼                │                                    │
+│  │  Zustand Store         │                                    │
+│  │  (pagination.page)     │                                    │
+│  │                        │                                    │
+│  │  → Atualiza grid       │                                    │
+│  └────────────────────────┘                                    │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   MODAL DE INTEGRAÇÃO                           │
+│                                                                  │
+│  IntegrationModal verifica: selected !== null                   │
+│                              │                                   │
+│                              ▼                                   │
+│  Se selected existe:                                           │
+│    • Renderiza modal com dados da integração                    │
+│    • Exibe histórico (HistoryStore.items)                       │
+│    • Link para acessar integração (target="_blank")            │
+│                              │                                   │
+│  Fechar modal:                                                 │
+│    • Botão X ou backdrop click                                 │
+│    • clear() → selected = null                                 │
+│    • Modal desaparece (render null)                            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                   STORES ZUSTAND (Estado Local)                 │
+│                                                                  │
+│  1. integrations.store                                          │
+│     • searchValue: string                                       │
+│     • pagination: { currentPage, itemsPerPage }                 │
+│     • setSearch() → reseta página                               │
+│     • onPageChange()                                            │
+│                                                                  │
+│  2. select-integration.store                                    │
+│     • selected: Integration | null                              │
+│     • select() → abre modal                                     │
+│     • clear() → fecha modal                                     │
+│                                                                  │
+│  3. history.store                                               │
+│     • items: Integration[] (máximo 3)                           │
+│     • add() → move para início, remove duplicatas               │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 📝 Observações Relevantes do Desenvolvimento
+
+### Variáveis de Ambiente
+
+- Precisam ter prefixo `VITE_` para serem expostas no cliente
+- Validadas em runtime através de schema Zod
+- Garantem type-safety em tempo de execução
+
+### Stores Zustand
+
+Três stores separadas por responsabilidade:
+- `integrations.store.ts`: Busca e paginação
+- `select-integration.store.ts`: Integração selecionada no modal
+- `history.store.ts`: Histórico das últimas 3 integrações
+
+### Validação de API
+
+Todas as respostas são validadas com Zod antes do uso, garantindo que dados inválidos sejam detectados imediatamente.
+
+### Build Docker
+
+O Dockerfile aceita variáveis de ambiente através de `--build-arg` durante o build, permitindo configurar a API URL no momento da construção da imagem.
