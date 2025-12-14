@@ -13,9 +13,13 @@ type SelectIntegrationActions = {
 
 type SelectIntegrationStore = SelectIntegrationState & SelectIntegrationActions
 
+export const initialSelectIntegrationState: SelectIntegrationState = {
+  selected: null,
+}
+
 export const useSelectedIntegrationStore = create<SelectIntegrationStore>()(
   immer((set) => ({
-    selected: null,
+    ...initialSelectIntegrationState,
 
     select: (integration) => {
       set((state) => {

@@ -12,9 +12,13 @@ type Actions = {
 
 type HistoryStore = State & Actions
 
+export const initialHistoryState: State = {
+  items: [],
+}
+
 export const useHistoryStore = create<HistoryStore>()(
   immer((set) => ({
-    items: [],
+    ...initialHistoryState,
 
     add: (integration) => {
       set((state) => {

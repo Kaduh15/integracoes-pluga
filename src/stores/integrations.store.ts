@@ -16,13 +16,17 @@ type Actions = {
 
 type IntegrationsStore = State & Actions
 
+export const initialIntegrationsState: State = {
+  searchValue: '',
+  pagination: {
+    currentPage: 1,
+    itemsPerPage: 12,
+  },
+}
+
 export const useIntegrationsStore = create<IntegrationsStore>()(
   immer((set) => ({
-    searchValue: '',
-    pagination: {
-      currentPage: 1,
-      itemsPerPage: 12,
-    },
+    ...initialIntegrationsState,
 
     setSearch: (searchValue) => {
       set((state) => {
