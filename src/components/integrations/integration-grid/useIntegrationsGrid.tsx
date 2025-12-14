@@ -1,5 +1,5 @@
 import { useIntegrationsQuery } from '@/hooks/useIntegrations'
-import { useIntegrationsStore } from '@/state/integrations.store'
+import { useIntegrationsStore } from '@/stores/integrations.store'
 
 export function useIntegrationsGrid() {
   const { integrations } = useIntegrationsQuery()

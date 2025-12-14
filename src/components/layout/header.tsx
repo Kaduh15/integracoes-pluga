@@ -1,5 +1,5 @@
 import { SearchIcon } from 'lucide-react'
-import { useIntegrationsStore } from '@/state/integrations.store'
+import { useIntegrationsStore } from '@/stores/integrations.store'
 
 export function Header() {
   const { setSearch } = useIntegrationsStore()

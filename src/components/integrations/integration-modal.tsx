@@ -1,7 +1,7 @@
-import type { ComponentProps } from 'react'
-import { useHistoryStore } from '@/state/history.store'
-import { useSelectedIntegrationStore } from '@/state/select-integration.store'
 import { X } from 'lucide-react'
+import type { ComponentProps } from 'react'
+import { useHistoryStore } from '@/stores/history.store'
+import { useSelectedIntegrationStore } from '@/stores/select-integration.store'
 
 type IntegrationModalProps = ComponentProps<'div'>
 
@@ -14,7 +14,11 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div
+      role="dialog"
+      aria-label="modal"
+      className="fixed inset-0 z-50 flex items-center justify-center"
+    >
       <button
         type="button"
         onClick={clear}
