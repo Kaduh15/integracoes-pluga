@@ -34,7 +34,7 @@ export const useHistoryStore = create<HistoryStore>()(
 
         state.items.unshift(integration)
 
-        if (state.items.length > 3) {
+        if (state.items.length > 4) {
           state.items.pop()
         }
       })
