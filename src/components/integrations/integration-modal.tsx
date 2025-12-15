@@ -42,7 +42,12 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
 
         <div className="flex items-center gap-3">
           <img
-            className="aspect-square w-10"
+            style={
+              {
+                '--bg': selected?.color,
+              } as React.CSSProperties
+            }
+            className="aspect-square w-20 rounded-full bg-(--bg) p-2"
             src={selected?.icon}
             alt={`${selected?.name} icon`}
           />
@@ -66,13 +71,28 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
             </Activity>
             <Activity mode={recentItems.length > 0 ? 'visible' : 'hidden'}>
               {recentItems.map((historyItem) => (
-                <li key={historyItem.name} className="flex items-center gap-2">
+                <li
+                  key={historyItem.name}
+                  className="flex w-fit items-center gap-2 rounded-xl border-b border-l p-2 transition hover:bg-accent/50"
+                >
                   <img
-                    className="aspect-square w-6"
+                    style={
+                      {
+                        '--bg': historyItem.color,
+                      } as React.CSSProperties
+                    }
+                    className="aspect-square w-8 rounded-full bg-(--bg) p-2"
                     src={historyItem.icon}
                     alt={`${historyItem.name} icon`}
                   />
-                  <span className="font-medium">{historyItem.name}</span>
+                  <a
+                    href={historyItem.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-sm underline-offset-2 hover:underline"
+                  >
+                    {historyItem.name}
+                  </a>
                 </li>
               ))}
             </Activity>

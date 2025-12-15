@@ -23,16 +23,25 @@ export function IntegrationCard({
     <button
       onClick={handleClick}
       type="button"
-      className="flex aspect-square w-30 flex-col items-center justify-center rounded-lg border p-4 transition hover:scale-[1.03] hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary active:scale-95"
+      className="group flex cursor-pointer items-center justify-center gap-4 rounded-lg border p-4 transition hover:scale-[1.03] hover:border-blue-400 hover:bg-[#ecf8fe] hover:shadow-md active:scale-95"
       {...props}
     >
-      <img
-        className="aspect-square w-10"
-        src={integration.icon}
-        alt={`${integration.name} icon`}
-      />
+      <div
+        style={
+          {
+            '--bg': integration.color,
+          } as React.CSSProperties
+        }
+        className={`flex aspect-square h-12 items-center justify-center rounded-full bg-(--bg) p-2`}
+      >
+        <img
+          className="aspect-square w-10"
+          src={integration.icon}
+          alt={`${integration.name} icon`}
+        />
+      </div>
 
-      <span className="mt-2 truncate font-medium text-sm">
+      <span className="flex-1 truncate text-wrap text-start font-semibold text-sm group-hover:text-black">
         {integration.name}
       </span>
     </button>
