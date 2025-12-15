@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import App from '@/app'
 import { makeIntegrations } from '../factories/integrations.factory'
 import { mockFetch } from '../helpers/mock-fetch'
 import { renderApp } from '../helpers/render'
-import userEvent from '@testing-library/user-event'
 
 describe('Pagination', () => {
   it('shows the first page of integrations by default', async () => {
