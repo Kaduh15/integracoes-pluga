@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import type { ComponentProps } from 'react'
+import { Activity, type ComponentProps } from 'react'
 import { useHistoryStore } from '@/stores/history.store'
 import { useSelectedIntegrationStore } from '@/stores/select-integration.store'
 
@@ -9,31 +9,33 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
   const { items } = useHistoryStore()
   const { selected, clear } = useSelectedIntegrationStore()
 
-  if (!selected) {
-    return null
-  }
+  const recentItems = items.slice(1, 4)
 
   return (
     <div
       role="dialog"
       aria-label="modal"
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      popover="auto"
+      className="h-dvh w-full bg-black/50"
+      id="integration-modal"
     >
       <button
         type="button"
         onClick={clear}
-        className="absolute inset-0 bg-black/50"
         aria-label="Close modal"
+        popoverTarget="integration-modal"
+        className="-z-10 fixed top-0 left-0 h-dvh w-full"
       />
 
       <div
-        className="relative z-10 w-full max-w-sm rounded-lg border bg-background p-4 shadow-xl"
+        className="relative m-auto mt-60 max-w-sm rounded-lg border bg-background p-4 shadow-xl"
         {...props}
       >
         <button
           type="button"
           onClick={clear}
           className="absolute top-3 right-3 rounded p-1 text-muted-foreground hover:bg-muted"
+          popoverTarget="integration-modal"
         >
           <X size={18} />
         </button>
@@ -41,14 +43,14 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
         <div className="flex items-center gap-3">
           <img
             className="aspect-square w-10"
-            src={selected.icon}
-            alt={`${selected.name} icon`}
+            src={selected?.icon}
+            alt={`${selected?.name} icon`}
           />
-          <span className="font-medium text-xl">{selected.name}</span>
+          <span className="font-medium text-xl">{selected?.name}</span>
         </div>
 
         <a
-          href={selected.link}
+          href={selected?.link}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 block rounded-md bg-primary px-4 py-2 text-center font-medium text-primary-foreground hover:opacity-90"
@@ -59,16 +61,21 @@ export function IntegrationModal({ ...props }: IntegrationModalProps) {
         <div className="mt-6">
           <h2 className="mb-2 font-semibold text-lg">Histórico de acessos</h2>
           <ul className="max-h-48 space-y-2 overflow-y-auto">
-            {items.map((historyItem) => (
-              <li key={historyItem.name} className="flex items-center gap-2">
-                <img
-                  className="aspect-square w-6"
-                  src={historyItem.icon}
-                  alt={`${historyItem.name} icon`}
-                />
-                <span className="font-medium">{historyItem.name}</span>
-              </li>
-            ))}
+            <Activity mode={recentItems.length === 0 ? 'visible' : 'hidden'}>
+              Nenhum acesso recente.
+            </Activity>
+            <Activity mode={recentItems.length > 0 ? 'visible' : 'hidden'}>
+              {recentItems.map((historyItem) => (
+                <li key={historyItem.name} className="flex items-center gap-2">
+                  <img
+                    className="aspect-square w-6"
+                    src={historyItem.icon}
+                    alt={`${historyItem.name} icon`}
+                  />
+                  <span className="font-medium">{historyItem.name}</span>
+                </li>
+              ))}
+            </Activity>
           </ul>
         </div>
       </div>

@@ -19,7 +19,11 @@ export function IntegrationGrid() {
       </span>
       <section className="mx-auto grid grid-cols-2 xs:grid-cols-3 grid-rows-6 xs:grid-rows-4 gap-4 sm:grid-cols-4 sm:grid-rows-3">
         {paginatedIntegrations.map((integration) => (
-          <IntegrationCard key={integration.app_id} integration={integration} />
+          <IntegrationCard
+            key={integration.app_id}
+            integration={integration}
+            popoverTarget="integration-modal"
+          />
         ))}
       </section>
 
